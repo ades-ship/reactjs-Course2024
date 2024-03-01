@@ -1,51 +1,58 @@
-import "./App.css";
-import Hooks from "./components/Hooks";
-import Navbar from "./components/Navbar";
-import TextForm from "./components/TextForm";
-import About from "./components/About";
-import { useState } from "react";
-import Alert from "./components/Alert";
-// components :
-// navbar
-function App() {
-  // set the dark and light mode use the state in the application
-  const [mode,setMode]=useState('light');
-  const [alert,setAlert]=useState(null);
+import './App.css';
+import Navbar from './components/Navbar';
+import TextForm from './components/TextForm';
+import About from './components/About';
+import React, { useState } from 'react';
+import Alert from './components/Alert';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Routes
+} from "react-router-dom";
+
  
-  const showAlert=(message,type)=>{
-    setAlert({
-      msg:message,
-      type:type
-    })
-    setTimeout(()=>{
-      setAlert(null);
-    },1500);
+function App() {
+  const [mode, setMode] = useState('light'); // Whether dark mode is enabled or not
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type)=>{
+      setAlert({
+        msg: message,
+        type: type
+      })
+      setTimeout(() => {
+          setAlert(null);
+      }, 1500);
   }
 
-// make the dark enable toggle function
-const toggleMode=()=>{
-  if(mode==='light'){
-    setMode('dark');
-    document.body.style.background='#042743';
-    showAlert("Dark mode has been enabled","success");
-  }else {
-    setMode('light');
-    document.body.style.background='white';
-    showAlert("white mode has been enabled","success");
+  const toggleMode = ()=>{
+    if(mode === 'light'){
+      setMode('dark');
+      document.body.style.backgroundColor = '#042743';
+      showAlert("Dark mode has been enabled", "success");
+    }
+    else{
+      setMode('light');
+      document.body.style.backgroundColor = 'white';
+      showAlert("Light mode has been enabled", "success");
+    }
   }
-}
-
   return (
     <>
-    <Navbar title="Textutils" mode={mode} toggleMode={toggleMode} aboutText="about textutils"/>
+    <Router>
+    <Navbar title="TextUtils" mode={mode} toggleMode={toggleMode} key={new Date()} />
     <Alert alert={alert}/>
-    <div className="container">
-    {/* <About/> */}
-    <TextForm showAlert={showAlert} heading="enter the text to analyze" mode={mode}/>
-
-    {/* <Hooks/> */}
-    </div>
-    </>
+    <div className="container my-3">
+        <Routes>
+          {/* /users --> Component 1
+              /users/home --> Component 2 */}
+          <Route path="/about" element={<About mode={mode} />} />
+          <Route path="/" element={<TextForm showAlert={showAlert} heading="Try TextUtils - word counter, character counter, remove extra spaces" mode={mode} />} />
+        </Routes>
+      </div>
+    </Router>
+    </> 
   );
 }
 

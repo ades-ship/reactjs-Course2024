@@ -73,11 +73,11 @@ const handleSentence = () => {
  <button disabled={text.length===0} className="btn btn-primary mx-1 my-1" onClick={handleCopy}>Copy Text</button>    </div>
     <div className="container my-3" style={{color:props.mode=='dark'?'white':'#042743'}}>
        <h2>Your Text summary</h2>
-       <p>{text.split(" ").length} words and {text.length} characters</p>
+       <p>{text.split(" ").length-1} words and {text.length} characters</p>
        <p>{0.008* text.split(" ").length} Minutes to read</p>
        <h2>Preview</h2>
        <p>{text.length>0?text:"Nothing to preview!"}</p>
-      
+       
     </div>
     </>
   );
